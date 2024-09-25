@@ -4,19 +4,26 @@ namespace Proxy
 {
     public class Config
     {
-        public string IpAddress { get; set; }
-        public int Port { get; set; }
-
         public const string Title = "FireflyProxy";
         public const string ConfigFilePath = "Config.json";
 
+        public int RunPort { get; set; }
+        public string ProxyIp { get; set; }
+        public int ProxyPort { get; set; }
+
         public static Config LoadConfig(string configFilePath)
         {
-            if (!File.Exists(configFilePath))
-            {
-                var defaultConfig = new Config { IpAddress = "182.92.218.218", Port = 21000 };
-                File.WriteAllText(configFilePath, JsonConvert.SerializeObject(defaultConfig, Formatting.Indented));
+            if (!File.Exists(configFilePath)) {
+                var Default = new Config {
+                    RunPort = 1337,
+                    ProxyIp = "127.0.0.1",
+                    ProxyPort = 619
+                };
+
+                File.WriteAllText(configFilePath, JsonConvert.SerializeObject(Default, Formatting.Indented));
+
             }
+
             return JsonConvert.DeserializeObject<Config>(File.ReadAllText(configFilePath));
         }
     }
